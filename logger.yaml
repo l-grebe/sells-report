@@ -1,0 +1,44 @@
+# logging教程参考文档：
+#    https://cuiqingcai.com/6080.html
+#    https://lisongmin.github.io/python-logging-inherit/
+# 该配置由uvicorn内部的默认配置转化而来
+version: 1
+disable_existing_loggers: false
+formatters:
+  default:
+    "()": 'uvicorn.logging.DefaultFormatter'
+    format: '%(asctime)s [line:%(lineno)4s] %(levelname)s %(message)s'
+    use_colors: no
+  access:
+    "()": 'uvicorn.logging.AccessFormatter'
+    # format: '%(asctime)s %(levelprefix)s %(client_addr)s - "%(request_line)s" %(status_code)s'
+    format: '%(asctime)s %(levelprefix)s %(status_code)s %(request_line)s '
+handlers:
+  default:
+    class: logging.StreamHandler
+    formatter: default
+    stream: ext://sys.stderr
+  access:
+    class: logging.StreamHandler
+    formatter: access
+    stream: ext://sys.stdout
+  remove:
+    class: logging.NullHandler
+loggers:
+  # pika:
+  #   level: INFO
+  #   handlers: [remove]
+  #   propagate: false
+  uvicorn:
+    level: INFO
+    handlers: [default]
+    propagate: false
+  uvicorn.access:
+    level: INFO
+    handlers: [access]
+    propagate: false
+  uvicorn.error:
+    level: INFO
+root:
+   level: INFO
+   handlers: [default]
