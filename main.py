@@ -1,6 +1,4 @@
-import io
 import time
-import xlrd
 import logging
 import pandas as pd
 from fastapi import FastAPI, File, Form, UploadFile, Request
@@ -9,19 +7,19 @@ from fastapi.responses import FileResponse
 app = FastAPI(title='SellsReport')
 
 
-# 中间件示例 - headers添加耗时，并写入了uvicorn的logging里，具体见uvicorn代码里的elapsed_time字段。
-@app.middleware("http")
-async def add_process_time_header(request: Request, call_next):
-    start_time = time.time()
-    response = await call_next(request)
-    process_time = time.time() - start_time
-    response.headers["elapsed-time"] = "%.3f ms" % (1000.0 * process_time)
-    return response
+# # 中间件示例 - headers添加耗时，并写入了uvicorn的logging里，具体见uvicorn代码里的elapsed_time字段。
+# @app.middleware("http")
+# async def add_process_time_header(request: Request, call_next):
+#     start_time = time.time()
+#     response = await call_next(request)
+#     process_time = time.time() - start_time
+#     response.headers["elapsed-time"] = "%.3f ms" % (1000.0 * process_time)
+#     return response
 
 
 @app.get("/")
 def root():
-    return {"Hello": "World"}
+    return {"message": "Hello World"}
 
 
 def gen_sells_report(res_path, sells, replenishment, match_name):
