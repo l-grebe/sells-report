@@ -19,6 +19,8 @@ pandas==2.2.2 \
 numpy==2.0.0 \
 pytz==2024.1 \
 tzdata==2024.1 \
+openpyxl==3.1.5 \
+et-xmlfile==1.1.0 \
 python-multipart==0.0.9
 
 COPY . $APP_HOME
